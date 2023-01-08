@@ -14,7 +14,7 @@ public class Server {
 
     public Server(int port) {
         setPort(port);
-        setMessages(new ArrayBlockingQueue<>(20)); ;
+        setMessages(new ArrayBlockingQueue<>(20));
         setConnections(new ArrayList<>());
     }
 
@@ -66,11 +66,11 @@ public class Server {
                 for (Message message : messages) {
                     if (message!=null) {
                         for (Connection connection: connections)
-                            if (message.getSender()!= connection.getOwner()){
+                            if (!Objects.equals(message.getSender(), connection.getOwner())){
                                 try {
                                     connection.sendMessage(message);
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    throw new RuntimeException();
                                 }
                         }
                     }
@@ -81,7 +81,7 @@ public class Server {
     }
 
     private class MessageReceiver implements Runnable {
-        private Connection connection;
+        private final Connection connection;
 
         public MessageReceiver(Connection connection) {
             this.connection = connection;
@@ -95,7 +95,7 @@ public class Server {
                         message = connection.readMessage();
 
                     } catch (IOException | ClassNotFoundException e) {
-                        throw new RuntimeException(e);
+                        throw new RuntimeException();
                     }
                     messages.add(message);
                 }
