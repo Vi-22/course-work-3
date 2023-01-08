@@ -3,7 +3,8 @@ package ru.viktoria.cw.cw3.server;
 import ru.viktoria.cw.cw3.common.Connection;
 import ru.viktoria.cw.cw3.common.Message;
 import java.io.IOException;
-import java.util.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -47,19 +48,25 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server(4004);
+        Server server = new Server(8090);
         server.run();
     }
 
     private void run() {
-        System.out.println("SERVER: 400");
-        Thread messageSender = new Thread(new MessageSender());
-        messageSender.start();
+        try (ServerSocket serverSocket = new ServerSocket(this.port)) {
+            System.out.println("SERVER: 400");
+            Thread messageSender = new Thread(new MessageSender());
+            messageSender.start();
             while (true) {
-                for (Connection connection: connections) {
-                Thread messageReceiver = new Thread(new MessageReceiver(connection));
-                messageReceiver.start();
+                Socket socket = serverSocket.accept();
+                Connection newConnection = new Connection(socket, "Server");
+                for (Connection connection : connections) {
+                    Thread messageReceiver = new Thread(new MessageReceiver(connection));
+                    messageReceiver.start();
+                }
             }
+        } catch(IOException e){
+            throw new RuntimeException(e);
         }
     }
 

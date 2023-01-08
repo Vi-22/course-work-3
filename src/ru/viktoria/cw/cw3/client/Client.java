@@ -28,14 +28,13 @@ public class Client {
             Socket clientSocket = new Socket(this.ip, this.port);
             this.connection = new Connection(clientSocket, this.name);
             Server.addConnection(this.connection);
-
         } catch (IOException e) {
             throw new RuntimeException();
         }
     }
 
     public static void main(String[] args) {
-        Client client1 = new Client("127.0.0.1", 0, "Tom");
+        Client client1 = new Client("127.0.0.1", 8090, "Tom");
         client1.run();
     }
 
