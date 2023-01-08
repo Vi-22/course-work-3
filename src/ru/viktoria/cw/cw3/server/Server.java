@@ -6,16 +6,17 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
     private int port;
     private BlockingQueue<Message> messages;
-    private ArrayList<Connection> connections;
+    private CopyOnWriteArrayList<Connection> connections;
 
     public Server(int port) {
         setPort(port);
         setMessages(new ArrayBlockingQueue<>(20));
-        setConnections(new ArrayList<>());
+        setConnections(new CopyOnWriteArrayList<>());
     }
 
     public int getPort() {
@@ -30,11 +31,11 @@ public class Server {
         this.messages = messages;
     }
 
-    public ArrayList<Connection> getConnections() {
+    public CopyOnWriteArrayList<Connection> getConnections() {
         return connections;
     }
 
-    public void setConnections(ArrayList<Connection> connections) {
+    public void setConnections(CopyOnWriteArrayList<Connection> connections) {
         this.connections = connections;
     }
 
