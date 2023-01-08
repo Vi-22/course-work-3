@@ -27,7 +27,7 @@ public class Client {
         try {
             this.connection = new Connection(new Socket(ip, port), this.name);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 
