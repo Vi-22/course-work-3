@@ -70,7 +70,7 @@ public class Server {
                 for (Message message : messages) {
                     if (message!=null) {
                         for (Connection connection: connections)
-                            if (!Objects.equals(message.getSender(), connection.getOwner())){
+                            if ((message.getSender().equals(connection.getOwner()))){
                                 try {
                                     connection.sendMessage(message);
                                 } catch (IOException e) {
