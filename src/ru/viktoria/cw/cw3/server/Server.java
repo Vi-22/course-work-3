@@ -43,6 +43,7 @@ public class Server {
             while (true) {
                 Socket socket = serverSocket.accept();
                 Connection newConnection = new Connection(socket, "Server");
+                connections.add(newConnection);
                 for (Connection connection : connections) {
                     Thread messageReceiver = new Thread(new MessageReceiver(connection));
                     messageReceiver.start();
