@@ -73,6 +73,7 @@ private class MessageSender implements Runnable {
     @Override
         public void run() {
             while (true) {
+                System.out.println("Введите ваше сообщение");
                 String text = this.scanner.nextLine();
                 if (text.equals("/exit")) {
                     System.exit(0);
