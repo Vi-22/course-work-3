@@ -14,36 +14,15 @@ public class Client {
     private String ip;
     private int port;
     private Connection connection;
-    private final Scanner scanner;
+    private final Scanner scanner = new Scanner(System.in);
 
     public Client(String ip, int port, String name) {
         this.setIp(ip);
         this.setPort(port);
         this.setName(name);
         this.createNewConnection();
-        this.scanner = new Scanner(System.in);
-    }
-    public void createNewConnection() {
-        try {
-            Socket clientSocket = new Socket(this.ip, this.port);
-            this.connection = new Connection(clientSocket, this.name);
-            Server.addConnection(this.connection);
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
     }
 
-    public static void main(String[] args) {
-        Client client1 = new Client("127.0.0.1", 8090, "Tom");
-        client1.run();
-    }
-
-    private void run() {
-        Thread messageReceiver = new Thread(new MessageReceiver());
-        messageReceiver.start();
-        Thread messageSender = new Thread(new MessageSender());
-        messageSender.start();
-    }
 
     public String getName() {
         return name;
@@ -53,26 +32,35 @@ public class Client {
         this.name = name;
     }
 
-    public String getIp() {
-        return ip;
-    }
-
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public int getPort() {
-        return port;
     }
 
     public void setPort(int port) {
         this.port = port;
     }
 
-private class MessageSender implements Runnable {
-   private final Scanner scanner = new Scanner(System.in);
+    public void createNewConnection() {
+        try {
+            Socket clientSocket = new Socket(this.ip, this.port);
+            this.connection = new Connection(clientSocket, this.name);
+            Server.addConnection(this.connection);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    protected void run() {
+        Thread messageReceiver = new Thread(new MessageReceiver());
+        messageReceiver.start();
+        Thread messageSender = new Thread(new MessageSender());
+        messageSender.start();
+    }
 
-    @Override
+
+    private class MessageSender implements Runnable {
+        private final Scanner scanner = new Scanner(System.in);
+
+        @Override
         public void run() {
             while (true) {
                 System.out.println("Введите ваше сообщение");
@@ -84,26 +72,26 @@ private class MessageSender implements Runnable {
                 try {
                     connection.sendMessage(message);
                 } catch (IOException e) {
-                    throw new RuntimeException();
+                    throw new RuntimeException(e);
                 }
             }
         }
     }
-
     private class MessageReceiver implements Runnable {
         @Override
         public void run() {
             while (true) {
                 try {
                     Message inbox = connection.readMessage();
-                        System.out.println(inbox.getDateTime() +
-                                " сообщение от " +
-                                inbox.getSender() + ": " +
-                                inbox.getText());
-                    } catch (IOException | ClassNotFoundException e) {
+                    System.out.println(inbox.getDateTime() +
+                            " сообщение от " +
+                            inbox.getSender() + ": " +
+                            inbox.getText());
+                } catch (IOException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
     }
 }
+

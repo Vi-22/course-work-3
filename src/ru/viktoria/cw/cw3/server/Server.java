@@ -10,33 +10,21 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
-    private static int port;
+    private int port;
     private BlockingQueue<Message> messages;
-    private static CopyOnWriteArrayList<Connection> connections;
+    private CopyOnWriteArrayList<Connection> connections;
 
     public Server(int port) {
         this.setPort(port);
         setMessages(new ArrayBlockingQueue<>(20));
         setConnections(new CopyOnWriteArrayList<>());
     }
-    public static void addConnection(Connection connection) {
-        connections.add(connection);
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public BlockingQueue<Message> getMessages() {
-        return messages;
+    public void addConnection(Connection connection) {
+        this.connections.add(connection);
     }
 
     public void setMessages(BlockingQueue<Message> messages) {
         this.messages = messages;
-    }
-
-    public CopyOnWriteArrayList<Connection> getConnections() {
-        return connections;
     }
 
     public void setConnections(CopyOnWriteArrayList<Connection> connections) {
@@ -47,12 +35,7 @@ public class Server {
         this.port = port;
     }
 
-    public static void main(String[] args) {
-        Server server = new Server(8090);
-        server.run();
-    }
-
-    private void run() {
+    void run() {
         try (ServerSocket serverSocket = new ServerSocket(this.port)) {
             System.out.println("SERVER: 400");
             Thread messageSender = new Thread(new MessageSender());
