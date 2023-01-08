@@ -25,7 +25,7 @@ public class Client {
     }
     public void createNewConnection() {
         try {
-            Socket clientSocket = new Socket("localhost", 4004);
+            Socket clientSocket = new Socket(this.ip, this.port);
             this.connection = new Connection(clientSocket, this.name);
             Server.addConnection(this.connection);
 
@@ -35,7 +35,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        Client client1 = new Client("37.252.94.233", 49239, "Tom");
+        Client client1 = new Client("127.0.0.1", 0, "Tom");
         client1.run();
     }
 
