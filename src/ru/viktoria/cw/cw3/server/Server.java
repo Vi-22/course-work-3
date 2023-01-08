@@ -96,15 +96,14 @@ public class Server {
         @Override
         public void run() {
             while (true) {
-                Message clientMessage = null;
+                Message message = null;
                     try {
-                        clientMessage = connection.readMessage();
+                        message = connection.readMessage();
 
                     } catch (IOException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
-                    System.out.println("От клиента: " + clientMessage.getSender());
-                    messages.add(clientMessage);
+                    messages.add(message);
                 }
             }
         }
