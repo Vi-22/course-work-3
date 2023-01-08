@@ -9,14 +9,17 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
-    private int port;
+    private static int port;
     private BlockingQueue<Message> messages;
-    private CopyOnWriteArrayList<Connection> connections;
+    private static CopyOnWriteArrayList<Connection> connections;
 
     public Server(int port) {
-        setPort(port);
+        this.setPort(port);
         setMessages(new ArrayBlockingQueue<>(20));
         setConnections(new CopyOnWriteArrayList<>());
+    }
+    public static void addConnection(Connection connection) {
+        connections.add(connection);
     }
 
     public int getPort() {
@@ -44,7 +47,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server(55555);
+        Server server = new Server(4004);
         server.run();
     }
 

@@ -2,10 +2,10 @@ package ru.viktoria.cw.cw3.client;
 
 import ru.viktoria.cw.cw3.common.Connection;
 import ru.viktoria.cw.cw3.common.Message;
+import ru.viktoria.cw.cw3.server.Server;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Scanner;
 
 
@@ -25,7 +25,10 @@ public class Client {
     }
     public void createNewConnection() {
         try {
-            this.connection = new Connection(new Socket(ip, port), this.name);
+            Socket clientSocket = new Socket("localhost", 4004);
+            this.connection = new Connection(clientSocket, this.name);
+            Server.addConnection(this.connection);
+
         } catch (IOException e) {
             throw new RuntimeException();
         }
