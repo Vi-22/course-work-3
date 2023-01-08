@@ -1,8 +1,6 @@
 package ru.viktoria.cw.cw3.common;
 
 
-import ru.viktoria.cw.cw3.client.Client;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -14,6 +12,7 @@ public class Message implements Serializable {
     public Message(String sender, String text) {
         this.sender = sender;
         this.text = text;
+        this.dateTime = LocalDateTime.now();
     }
 
     public String getSender() {

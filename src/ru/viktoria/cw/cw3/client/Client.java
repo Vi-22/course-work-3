@@ -6,6 +6,8 @@ import ru.viktoria.cw.cw3.server.Server;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 
@@ -44,7 +46,6 @@ public class Client {
         try {
             Socket clientSocket = new Socket(this.ip, this.port);
             this.connection = new Connection(clientSocket, this.name);
-            Server.addConnection(this.connection);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
