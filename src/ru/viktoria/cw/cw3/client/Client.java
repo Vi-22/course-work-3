@@ -32,12 +32,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        Scanner scanner1 = new Scanner(System.in);
-        System.out.println("Введите имя");
-        String name = scanner1.nextLine();
-        Client client1 = new Client("37.252.94.233", 49239, name);
-        scanner1.close();
-        client1.scanner.nextLine();
+        Client client1 = new Client("37.252.94.233", 49239, "Tom");
         client1.run();
     }
 
